@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "mongodb": "^4.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18"
+  },
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "node .",
+    "compile": "tsc",
+    "test": "tsc && node ."
+  }
+}
