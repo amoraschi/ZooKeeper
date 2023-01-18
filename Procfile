@@ -1,1 +1,1 @@
-worker: npm test
+worker: npm i typescript && npm test
