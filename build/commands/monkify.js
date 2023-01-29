@@ -21,7 +21,8 @@ export default {
         const reason = interaction.options.getString('reason');
         const mention = interaction.options.getUser('user');
         const isUserAdmin = interaction.member.permissions.has(PermissionsBitField.Flags.Administrator);
-        if (!isUserAdmin) {
+        const isZooKeeper = interaction.member.roles.cache.has('1031265481249783809');
+        if (!isUserAdmin && !isZooKeeper) {
             await interaction.reply({
                 content: 'You don\'t have permission to use this command',
                 ephemeral: true
