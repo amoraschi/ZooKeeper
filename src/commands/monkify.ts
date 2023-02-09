@@ -1,5 +1,6 @@
 import { PermissionsBitField } from 'discord.js'
 import { addDoc } from '../database.js'
+import {isUserAdmin} from "../utils/utils";
 
 export default {
   name: 'monkify',
@@ -22,8 +23,8 @@ export default {
     const reason = interaction.options.getString('reason')
     const mention = interaction.options.getUser('user')
     console.log(mention)
-    const isUserAdmin = interaction.member.permissions.has(PermissionsBitField.Flags.Administrator) ? true : interaction.member.roles.cache.find(r => r.name === "zoo keeper")
-    if (!isUserAdmin) {
+
+    if (!isUserAdmin(interaction.member)) {
       await interaction.reply({
         content: 'You don\'t have permission to use this command',
         ephemeral: true
