@@ -43,6 +43,6 @@ async function getCommands() {
     return commands;
 }
 function isUserAllowed(user) {
-    return (user.permissions.has(PermissionsBitField.Flags.Administrator) ? true : (user.roles.cache.find(role => role.id === '1065413129955192874') != null));
+    return (user.permissions.has(PermissionsBitField.Flags.Administrator) ? true : (user.roles.cache.find(role => role.id === process.env.ZOO_KEEPER_ROLE) != null));
 }
 export { isUserAllowed, log, getCommands };
