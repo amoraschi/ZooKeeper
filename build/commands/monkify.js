@@ -1,5 +1,9 @@
 import { addDoc } from '../database.js';
+<<<<<<< HEAD
 import { isUserAllowed } from '../utils/utils.js';
+=======
+import { isUserAdmin } from "../utils/utils.js";
+>>>>>>> fb0ffd37ce865e8b5a0f67a71559a1f3a66403f2
 export default {
     name: 'monkify',
     description: 'Converts user to a monki',
@@ -20,7 +24,12 @@ export default {
     execute: async (interaction) => {
         const reason = interaction.options.getString('reason');
         const mention = interaction.options.getUser('user');
+<<<<<<< HEAD
         if (!isUserAllowed(interaction.member)) {
+=======
+        console.log(mention);
+        if (!isUserAdmin(interaction.member)) {
+>>>>>>> fb0ffd37ce865e8b5a0f67a71559a1f3a66403f2
             await interaction.reply({
                 content: 'You don\'t have permission to use this command',
                 ephemeral: true

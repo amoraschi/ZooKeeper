@@ -1,5 +1,9 @@
 import { readdirSync } from 'fs';
+<<<<<<< HEAD
 import { PermissionsBitField } from 'discord.js';
+=======
+import { PermissionsBitField } from "discord.js";
+>>>>>>> fb0ffd37ce865e8b5a0f67a71559a1f3a66403f2
 const colors = {
     red: '\x1b[31m',
     green: '\x1b[32m',
@@ -42,7 +46,14 @@ async function getCommands() {
     }
     return commands;
 }
+<<<<<<< HEAD
 function isUserAllowed(user) {
     return (user.permissions.has(PermissionsBitField.Flags.Administrator) ? true : (user.roles.cache.find(role => role.id === '1065413129955192874') != null));
 }
 export { isUserAllowed, log, getCommands };
+=======
+function isUserAdmin(user) {
+    return user.permissions.has(PermissionsBitField.Flags.Administrator) ? true : user.roles.cache.find(r => r.name === "zoo keeper");
+}
+export { isUserAdmin, log, getCommands };
+>>>>>>> fb0ffd37ce865e8b5a0f67a71559a1f3a66403f2

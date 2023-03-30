@@ -40,7 +40,7 @@ function getColor (prefix: string = ''): string {
 
 async function getCommands (): Promise<ZooCommand[]> {
   const commands: ZooCommand[] = []
-  const commandFiles = readdirSync('./build/commands')
+  const commandFiles = readdirSync('./commands')
   for (const file of commandFiles) {
     const command = (await import(`../commands/${file}`)).default
     commands.push(command)
