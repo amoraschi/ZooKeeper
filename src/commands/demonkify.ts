@@ -1,13 +1,5 @@
-import { addDoc, removeDoc } from '../database.js'
-<<<<<<< HEAD
-<<<<<<< HEAD
+import { removeDoc } from '../database.js'
 import { isUserAllowed } from '../utils/utils.js'
-=======
-import {isUserAdmin} from "../utils/utils";
->>>>>>> parent of fb0ffd3... sowwy i didnt cowmit
-=======
-import {isUserAdmin} from "../utils/utils.js";
->>>>>>> fb0ffd37ce865e8b5a0f67a71559a1f3a66403f2
 
 export default {
   name: 'demonkify',

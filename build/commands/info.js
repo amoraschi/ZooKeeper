@@ -1,9 +1,5 @@
 import { getDoc } from '../database.js';
-<<<<<<< HEAD
 import { isUserAllowed } from '../utils/utils.js';
-=======
-import { isUserAdmin } from "../utils/utils.js";
->>>>>>> fb0ffd37ce865e8b5a0f67a71559a1f3a66403f2
 export default {
     name: 'info',
     description: 'Replies with the info of a monki',
@@ -17,11 +13,7 @@ export default {
     ],
     execute: async (interaction) => {
         const mention = interaction.options.getUser('user');
-<<<<<<< HEAD
         if (!isUserAllowed(interaction.member)) {
-=======
-        if (!isUserAdmin(interaction.member)) {
->>>>>>> fb0ffd37ce865e8b5a0f67a71559a1f3a66403f2
             await interaction.reply({
                 content: 'You don\'t have permission to use this command',
                 ephemeral: true
