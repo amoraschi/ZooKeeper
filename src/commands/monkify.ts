@@ -1,6 +1,6 @@
 import { PermissionsBitField } from 'discord.js'
 import { addDoc } from '../database.js'
-import {isUserAdmin} from "../utils/utils";
+import {isUserAdmin} from "../utils/utils.js";
 
 export default {
   name: 'monkify',

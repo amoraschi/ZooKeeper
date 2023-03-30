@@ -1,4 +1,5 @@
 import { readdirSync } from 'fs';
+import { PermissionsBitField } from "discord.js";
 const colors = {
     red: '\x1b[31m',
     green: '\x1b[32m',
@@ -41,4 +42,7 @@ async function getCommands() {
     }
     return commands;
 }
-export { log, getCommands };
+function isUserAdmin(user) {
+    return user.permissions.has(PermissionsBitField.Flags.Administrator) ? true : user.roles.cache.find(r => r.name === "zoo keeper");
+}
+export { isUserAdmin, log, getCommands };

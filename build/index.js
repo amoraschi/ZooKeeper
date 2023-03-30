@@ -29,6 +29,11 @@ async function startZooKeeper() {
             }
         });
     });
+    client.on("messageCreate", async (msg) => {
+        if (msg.content.match(".*?(sel(l)?.*?((key)||(bin(master)?))).*?") || msg.content.match(".*?(((key)||(bin(master)?)).*?sel(l)?).*?")) {
+            msg.reply("no u may not");
+        }
+    });
     client.login(process.env.BOT_TOKEN);
 }
 startZooKeeper();
