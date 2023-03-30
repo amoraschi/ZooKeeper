@@ -35,7 +35,7 @@ function getColor(prefix = '') {
 }
 async function getCommands() {
     const commands = [];
-    const commandFiles = readdirSync('./commands');
+    const commandFiles = readdirSync('./build/commands');
     for (const file of commandFiles) {
         const command = (await import(`../commands/${file}`)).default;
         commands.push(command);

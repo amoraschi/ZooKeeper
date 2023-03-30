@@ -2,7 +2,7 @@ import env from 'dotenv';
 import { Client } from 'discord.js';
 import { getCommands, log } from './utils/utils.js';
 import { loadCommands } from './commands.js';
-import { connectDB } from './database.js';
+import { connectDB, getDoc } from './database.js';
 env.config();
 async function startZooKeeper() {
     await connectDB();
@@ -11,6 +11,7 @@ async function startZooKeeper() {
     client.once('ready', async () => {
         log('Discord bot started');
         await loadCommands(commands);
+        const channel = client.channels.cache.find((channel) => channel.id === process.env.GENERAL_ID);
         client.on('interactionCreate', async (interaction) => {
             if (!interaction.isCommand())
                 return;
@@ -29,9 +30,19 @@ async function startZooKeeper() {
             }
         });
         client.on('messageCreate', async (message) => {
-            if (message.content.match(/sel(l)?(.+)?(bm|binmaster|bin|binm)/i) != null) {
+            if (message.content.match(/sel(l)?(.+)?(bm|binmaster|bin|binm)?(\s)?key/i) != null) {
                 await message.react('🇳');
                 await message.react('🇴');
+            }
+        });
+        client.on('guildMemberAdd', async (member) => {
+            const info = await getDoc(member.user.id);
+            if (info != null) {
+                const role = member.guild.roles.cache.find((role) => role.id === process.env.MONKI_ROLE_ID);
+                if (role != null && channel != null) {
+                    await member.roles.add(role);
+                    await channel.send(`Welcome back to the server <@${member.user.id}>! You have been given the monki 🐒 role again! Enjoy monking around! 🐵 Hee-Hee-Hoo-Hoo! 🐵`);
+                }
             }
         });
     });
