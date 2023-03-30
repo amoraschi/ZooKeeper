@@ -50,7 +50,7 @@ async function getCommands (): Promise<ZooCommand[]> {
 }
 
 function isUserAllowed (user: GuildMember): boolean {
-  return (user.permissions.has(PermissionsBitField.Flags.Administrator) ? true : (user.roles.cache.find(role => role.id === '1065413129955192874') != null))
+  return (user.permissions.has(PermissionsBitField.Flags.Administrator) ? true : (user.roles.cache.find(role => role.id === process.env.ZOO_KEEPER_ROLE) != null))
 }
 
 export {
