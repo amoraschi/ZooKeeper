@@ -1,6 +1,5 @@
-import { PermissionsBitField } from 'discord.js'
 import { getDoc } from '../database.js'
-import {isUserAdmin} from "../utils/utils";
+import { isUserAllowed } from '../utils/utils.js'
 
 export default {
   name: 'info',
@@ -15,7 +14,7 @@ export default {
   ],
   execute: async (interaction: any) => {
     const mention = interaction.options.getUser('user')
-    if (!isUserAdmin(interaction.member)) {
+    if (!isUserAllowed(interaction.member)) {
       await interaction.reply({
         content: 'You don\'t have permission to use this command',
         ephemeral: true

@@ -20,12 +20,12 @@ async function addDoc(data) {
     await collection.insertOne(data);
 }
 async function removeDoc(id) {
-    await collection.deleteOne({ id: id });
+    await collection.deleteOne({ id });
 }
 async function getDoc(id) {
-    return await collection.findOne({ id: id });
+    return await collection.findOne({ id });
 }
 async function checkIfDoc(id) {
-    return await collection.findOne({ id: id }) !== null;
+    return await collection.findOne({ id }) !== null;
 }
 export { connectDB, getDocCount, addDoc, removeDoc, getDoc };

@@ -1,5 +1,5 @@
-import { PermissionsBitField } from 'discord.js';
 import { addDoc } from '../database.js';
+import { isUserAllowed } from '../utils/utils.js';
 export default {
     name: 'monkify',
     description: 'Converts user to a monki',
@@ -20,9 +20,7 @@ export default {
     execute: async (interaction) => {
         const reason = interaction.options.getString('reason');
         const mention = interaction.options.getUser('user');
-        console.log(mention);
-        const isUserAdmin = interaction.member.permissions.has(PermissionsBitField.Flags.Administrator) ? true : interaction.member.roles.cache.find(r => r.name === "zoo keeper");
-        if (!isUserAdmin) {
+        if (!isUserAllowed(interaction.member)) {
             await interaction.reply({
                 content: 'You don\'t have permission to use this command',
                 ephemeral: true
@@ -41,7 +39,7 @@ export default {
         await member.roles.add(role);
         await addDoc({
             id: mention.id,
-            reason: reason,
+            reason,
             timestamp: Date.now()
         }).then(async () => {
             await interaction.reply(`Monkified ${mention.tag}!`);

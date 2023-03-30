@@ -29,15 +29,15 @@ async function addDoc (data: MonkifyData): Promise<void> {
 }
 
 async function removeDoc (id: string): Promise<void> {
-  await collection.deleteOne({ id: id })
+  await collection.deleteOne({ id })
 }
 
 async function getDoc (id: string): Promise<Document | null> {
-  return await collection.findOne({ id: id })
+  return await collection.findOne({ id })
 }
 
 async function checkIfDoc (id: string): Promise<boolean> {
-  return await collection.findOne({ id: id }) !== null
+  return await collection.findOne({ id }) !== null
 }
 
 export {

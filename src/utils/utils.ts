@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs'
 import { ZooCommand } from './constants'
-import {PermissionsBitField} from "discord.js";
+import { GuildMember, PermissionsBitField } from 'discord.js'
 
 const colors = {
   red: '\x1b[31m',
@@ -49,12 +49,12 @@ async function getCommands (): Promise<ZooCommand[]> {
   return commands
 }
 
-function isUserAdmin(user) : boolean {
-  return user.permissions.has(PermissionsBitField.Flags.Administrator) ? true : user.roles.cache.find(r => r.name === "zoo keeper")
+function isUserAllowed (user: GuildMember): boolean {
+  return (user.permissions.has(PermissionsBitField.Flags.Administrator) ? true : (user.roles.cache.find(role => role.id === '1065413129955192874') != null))
 }
 
 export {
-  isUserAdmin,
+  isUserAllowed,
   log,
   getCommands
 }

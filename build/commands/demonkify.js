@@ -1,5 +1,5 @@
-import { PermissionsBitField } from 'discord.js';
 import { removeDoc } from '../database.js';
+import { isUserAllowed } from '../utils/utils.js';
 export default {
     name: 'demonkify',
     description: 'Converts monki to a normal user',
@@ -13,8 +13,7 @@ export default {
     ],
     execute: async (interaction) => {
         const mention = interaction.options.getUser('user');
-        const isUserAdmin = interaction.member.permissions.has(PermissionsBitField.Flags.Administrator);
-        if (!isUserAdmin) {
+        if (!isUserAllowed(interaction.member)) {
             await interaction.reply({
                 content: 'You don\'t have permission to use this command',
                 ephemeral: true

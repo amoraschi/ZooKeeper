@@ -28,6 +28,12 @@ async function startZooKeeper() {
                 });
             }
         });
+        client.on('messageCreate', async (message) => {
+            if (message.content.match(/sel(l)?(.+)?(bm|binmaster|bin|binm)/i) != null) {
+                await message.react('🇳');
+                await message.react('🇴');
+            }
+        });
     });
     client.login(process.env.BOT_TOKEN);
 }
