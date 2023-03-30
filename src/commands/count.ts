@@ -1,5 +1,9 @@
 import { getDocCount } from '../database.js'
+<<<<<<< HEAD
 import { isUserAllowed } from '../utils/utils.js'
+=======
+import {isUserAdmin} from "../utils/utils";
+>>>>>>> parent of fb0ffd3... sowwy i didnt cowmit
 
 export default {
   name: 'count',
