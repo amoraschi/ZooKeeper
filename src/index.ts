@@ -47,6 +47,13 @@ async function startZooKeeper (): Promise<void> {
         await message.react('🇳')
         await message.react('🇴')
       }
+    js
+      if (message.member.roles.cache.find(role => role.id === process.env.MONKI_ROLE_ID)) {
+        message.reply('<@&979117682806902794>').then(msg => {
+          setTimeout(() => msg.delete(), 200)
+        })
+        .catch(console.log)
+      }
     })
 
     client.on('guildMemberAdd', async (member) => {
