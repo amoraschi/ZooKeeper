@@ -1,6 +1,6 @@
 import env from 'dotenv'
-import { Client, TextChannel } from 'discord.js'
-import { getCommands, log } from './utils/utils.js'
+import { Client, GuildMember, TextChannel } from 'discord.js'
+import { getCommands, isUserAllowed, log } from './utils/utils.js'
 import { loadCommands } from './commands.js'
 import { connectDB, getDoc } from './database.js'
 
@@ -21,6 +21,15 @@ async function startZooKeeper (): Promise<void> {
       if (!interaction.isCommand()) return
       const command = commands.find(command => command.name === interaction.commandName)
       if (command == null) return
+
+      if (!isUserAllowed(interaction.member as GuildMember)) {
+        await interaction.reply({
+          content: 'You don\'t have permission to use this command',
+          ephemeral: true
+        })
+
+        return
+      }
 
       try {
         await command.execute(interaction)

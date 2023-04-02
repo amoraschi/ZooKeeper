@@ -1,5 +1,4 @@
 import { getDoc } from '../database.js'
-import { isUserAllowed } from '../utils/utils.js'
 
 export default {
   name: 'info',
@@ -14,15 +13,6 @@ export default {
   ],
   execute: async (interaction: any) => {
     const mention = interaction.options.getUser('user')
-    if (!isUserAllowed(interaction.member)) {
-      await interaction.reply({
-        content: 'You don\'t have permission to use this command',
-        ephemeral: true
-      })
-
-      return
-    }
-
     const role = interaction.guild.roles.cache.find((role: any) => role.id === process.env.MONKI_ROLE_ID)
     const member = interaction.guild.members.cache.find((member: any) => member.id === mention.id)
 

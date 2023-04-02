@@ -28,6 +28,18 @@ async function addDoc (data: MonkifyData): Promise<void> {
   await collection.insertOne(data)
 }
 
+async function getNewestDoc (): Promise<Document | null> {
+  return await collection.find().limit(1).sort({ $natural: -1 }).next()
+}
+
+async function getLongestReasonDoc (): Promise<Document | null> {
+  return await collection.find().limit(1).sort({ reason: 1 }).next()
+}
+
+async function getShortestReasonDoc (): Promise<Document | null> {
+  return await collection.find().limit(1).sort({ reason: -1 }).next()
+}
+
 async function removeDoc (id: string): Promise<void> {
   await collection.deleteOne({ id })
 }
@@ -44,6 +56,9 @@ export {
   connectDB,
   getDocCount,
   addDoc,
+  getNewestDoc,
+  getLongestReasonDoc,
+  getShortestReasonDoc,
   removeDoc,
   getDoc
 }

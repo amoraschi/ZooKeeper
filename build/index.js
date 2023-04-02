@@ -1,6 +1,6 @@
 import env from 'dotenv';
 import { Client } from 'discord.js';
-import { getCommands, log } from './utils/utils.js';
+import { getCommands, isUserAllowed, log } from './utils/utils.js';
 import { loadCommands } from './commands.js';
 import { connectDB, getDoc } from './database.js';
 env.config();
@@ -18,6 +18,13 @@ async function startZooKeeper() {
             const command = commands.find(command => command.name === interaction.commandName);
             if (command == null)
                 return;
+            if (!isUserAllowed(interaction.member)) {
+                await interaction.reply({
+                    content: 'You don\'t have permission to use this command',
+                    ephemeral: true
+                });
+                return;
+            }
             try {
                 await command.execute(interaction);
             }
