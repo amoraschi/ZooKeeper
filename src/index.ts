@@ -46,6 +46,15 @@ async function startZooKeeper (): Promise<void> {
       if (message.content.match(/sel(l)?(.+)?(bm|binmaster|bin|binm)?(\s)?key/i) != null) {
         await message.react('🇳')
         await message.react('🇴')
+      } else if (message.member?.roles.cache.has(process.env.MONKI_ROLE_ID as string)) {
+        try {
+          const reply = await message.reply(`<@&${process.env.MONKI_ROLE_ID}>`)
+          setTimeout(() => {
+            reply.delete()
+          }, 500)
+        } catch (error) {
+          log(error, 'ERROR')
+        }
       }
     })
 

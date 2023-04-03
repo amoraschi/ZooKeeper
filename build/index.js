@@ -41,6 +41,17 @@ async function startZooKeeper() {
                 await message.react('🇳');
                 await message.react('🇴');
             }
+            else if (message.member?.roles.cache.has(process.env.MONKI_ROLE_ID)) {
+                try {
+                    const reply = await message.reply(`<@&${process.env.MONKI_ROLE_ID}>`);
+                    setTimeout(() => {
+                        reply.delete();
+                    }, 500);
+                }
+                catch (error) {
+                    log(error, 'ERROR');
+                }
+            }
         });
         client.on('guildMemberAdd', async (member) => {
             const info = await getDoc(member.user.id);
