@@ -11,6 +11,8 @@ async function startZooKeeper (): Promise<void> {
   const client = new Client({ intents: ['Guilds', 'GuildMessages', 'GuildMembers', 'MessageContent'] })
   const commands = await getCommands()
 
+  let shouldPingMonki = true
+
   client.once('ready', async () => {
     log('Discord bot started')
     await loadCommands(commands)
@@ -47,14 +49,17 @@ async function startZooKeeper (): Promise<void> {
         await message.react('🇳')
         await message.react('🇴')
       } else if (message.member?.roles.cache.has(process.env.MONKI_ROLE_ID as string)) {
-        try {
-          const reply = await message.reply(`<@&${process.env.MONKI_ROLE_ID}>`)
+        if (!shouldPingMonki) return
+        shouldPingMonki = false
+
+        const reply = await message.reply(`<@&${process.env.MONKI_ROLE_ID}>`).catch(() => {})
+        setTimeout(() => {
+          reply?.delete().catch(() => {})
+
           setTimeout(() => {
-            reply.delete()
-          }, 500)
-        } catch (error) {
-          log(error, 'ERROR')
-        }
+            shouldPingMonki = true
+          }, 10000)
+        }, 500)
       }
     })
 
