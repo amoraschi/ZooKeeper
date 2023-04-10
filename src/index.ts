@@ -79,3 +79,7 @@ async function startZooKeeper (): Promise<void> {
 }
 
 startZooKeeper()
+let startTime = Date.now()
+export {
+  startTime
+}
