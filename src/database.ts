@@ -18,6 +18,10 @@ async function getDocCount (): Promise<number> {
   return await collection.countDocuments()
 }
 
+async function getAllDocs () : Promise<Collection> {
+  return collection;
+}
+
 async function addDoc (data: MonkifyData): Promise<void> {
   const exists = await checkIfDoc(data.id)
 
@@ -26,6 +30,10 @@ async function addDoc (data: MonkifyData): Promise<void> {
   }
 
   await collection.insertOne(data)
+}
+
+async function addBulkDoc (data: MonkifyData[]): Promise<void> {
+  await collection.insertMany(data);
 }
 
 async function getNewestDoc (): Promise<Document | null> {
@@ -60,5 +68,7 @@ export {
   getLongestReasonDoc,
   getShortestReasonDoc,
   removeDoc,
-  getDoc
+  getDoc,
+    getAllDocs,
+    addBulkDoc
 }

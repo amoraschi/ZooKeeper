@@ -1,6 +1,7 @@
 import { readdirSync } from 'fs'
 import { ZooCommand } from './constants'
 import { GuildMember, PermissionsBitField } from 'discord.js'
+import * as fs from "fs";
 
 const colors = {
   red: '\x1b[31m',
@@ -40,7 +41,7 @@ function getColor (prefix: string = ''): string {
 
 async function getCommands (): Promise<ZooCommand[]> {
   const commands: ZooCommand[] = []
-  const commandFiles = readdirSync('./build/commands')
+  const commandFiles = fs.existsSync('./build/commands') ? readdirSync('./build/commands') : readdirSync('../build/commands')
   for (const file of commandFiles) {
     const command = (await import(`../commands/${file}`)).default
     commands.push(command)

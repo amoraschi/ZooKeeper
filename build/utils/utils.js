@@ -1,5 +1,6 @@
 import { readdirSync } from 'fs';
 import { PermissionsBitField } from 'discord.js';
+import * as fs from "fs";
 const colors = {
     red: '\x1b[31m',
     green: '\x1b[32m',
@@ -35,7 +36,7 @@ function getColor(prefix = '') {
 }
 async function getCommands() {
     const commands = [];
-    const commandFiles = readdirSync('./build/commands');
+    const commandFiles = fs.existsSync('./build/commands') ? readdirSync('./build/commands') : readdirSync('../build/commands');
     for (const file of commandFiles) {
         const command = (await import(`../commands/${file}`)).default;
         commands.push(command);

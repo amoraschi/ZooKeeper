@@ -12,12 +12,18 @@ function setCollection() {
 async function getDocCount() {
     return await collection.countDocuments();
 }
+async function getAllDocs() {
+    return collection;
+}
 async function addDoc(data) {
     const exists = await checkIfDoc(data.id);
     if (exists) {
         throw new Error('Already exists');
     }
     await collection.insertOne(data);
+}
+async function addBulkDoc(data) {
+    await collection.insertMany(data);
 }
 async function getNewestDoc() {
     return await collection.find().limit(1).sort({ $natural: -1 }).next();
@@ -37,4 +43,4 @@ async function getDoc(id) {
 async function checkIfDoc(id) {
     return await collection.findOne({ id }) !== null;
 }
-export { connectDB, getDocCount, addDoc, getNewestDoc, getLongestReasonDoc, getShortestReasonDoc, removeDoc, getDoc };
+export { connectDB, getDocCount, addDoc, getNewestDoc, getLongestReasonDoc, getShortestReasonDoc, removeDoc, getDoc, getAllDocs, addBulkDoc };

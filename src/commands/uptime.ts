@@ -1,4 +1,4 @@
-import {startTime} from "../index";
+import {startTime} from "../index.js";
 
 export default {
     name: 'uptime',
@@ -6,7 +6,7 @@ export default {
     options: [],
     execute: async (interaction: any) => {
         await interaction.reply({
-            content: `\`${(startTime - Date.now())/3600000}\`h uptime.`,
+            content: `\`${(Date.now()) - startTime/3600000}\`h uptime.`,
             ephemeral: true
         })
     }

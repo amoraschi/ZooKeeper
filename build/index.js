@@ -4,6 +4,7 @@ import { getCommands, isUserAllowed, log } from './utils/utils.js';
 import { loadCommands } from './commands.js';
 import { connectDB, getDoc } from './database.js';
 env.config();
+let SERVER;
 async function startZooKeeper() {
     await connectDB();
     const client = new Client({ intents: ['Guilds', 'GuildMessages', 'GuildMembers', 'MessageContent'] });
@@ -11,6 +12,8 @@ async function startZooKeeper() {
     let shouldPingMonki = true;
     client.once('ready', async () => {
         log('Discord bot started');
+        // @ts-ignore
+        SERVER = await client.guilds.fetch(process.env.GUILD_ID.toString());
         await loadCommands(commands);
         const channel = client.channels.cache.find((channel) => channel.id === process.env.GENERAL_ID);
         client.on('interactionCreate', async (interaction) => {
@@ -69,3 +72,5 @@ async function startZooKeeper() {
     client.login(process.env.BOT_TOKEN);
 }
 startZooKeeper();
+let startTime = Date.now();
+export { SERVER, startTime };

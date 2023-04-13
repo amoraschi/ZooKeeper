@@ -5,6 +5,7 @@ import { loadCommands } from './commands.js'
 import { connectDB, getDoc } from './database.js'
 
 env.config()
+let SERVER ;
 
 async function startZooKeeper (): Promise<void> {
   await connectDB()
@@ -14,7 +15,10 @@ async function startZooKeeper (): Promise<void> {
   let shouldPingMonki = true
 
   client.once('ready', async () => {
+
     log('Discord bot started')
+    // @ts-ignore
+    SERVER = await client.guilds.fetch(process.env.GUILD_ID.toString());
     await loadCommands(commands)
 
     const channel = client.channels.cache.find((channel: any) => channel.id === process.env.GENERAL_ID)
@@ -81,5 +85,6 @@ async function startZooKeeper (): Promise<void> {
 startZooKeeper()
 let startTime = Date.now()
 export {
+  SERVER,
   startTime
 }
