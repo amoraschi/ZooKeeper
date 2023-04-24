@@ -1,4 +1,5 @@
 import env from 'dotenv'
+import cron from 'node-cron'
 import { Client, GuildMember, TextChannel } from 'discord.js'
 import { getCommands, isUserAllowed, log } from './utils/utils.js'
 import { loadCommands } from './commands.js'
@@ -18,6 +19,12 @@ async function startZooKeeper (): Promise<void> {
     await loadCommands(commands)
 
     const channel = client.channels.cache.find((channel: any) => channel.id === process.env.GENERAL_ID)
+    const guild = client.guilds.cache.get(process.env.GUILD_ID as string)
+
+    cron.schedule('0 0 * * *', async () => {
+      console.log('Fetching members')
+      await guild?.members.fetch() 
+    })
 
     client.on('interactionCreate', async (interaction) => {
       if (!interaction.isCommand()) return
@@ -52,8 +59,8 @@ async function startZooKeeper (): Promise<void> {
         if (!shouldPingMonki) return
         shouldPingMonki = false
 
-        const randomMonki = await getRandomDoc()
-        const reply = await message.reply(`Rejoice <@&${randomMonki?.id}>, as you have been randomly selected from the zoo! 🐵 Hee-Hee-Hoo-Hoo! 🐵`).catch(() => {})
+        const user = message.guild?.roles.cache.get(process.env.MONKI_ROLE_ID as string)?.members.random()
+        const reply = await message.reply(`Rejoice <@${user?.id}>, as you have been randomly selected from the zoo! 🐵 Hee-Hee-Hoo-Hoo! 🐵`).catch(() => {})
         setTimeout(() => {
           reply?.delete().catch(() => {})
 
