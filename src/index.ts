@@ -61,7 +61,8 @@ async function startZooKeeper (): Promise<void> {
         if (!shouldPingMonki) return
         shouldPingMonki = false
 
-        const user = message.guild?.roles.cache.get(process.env.MONKI_ROLE_ID as string)?.members.random()
+        const monkiRole = message.guild?.roles.cache.get(process.env.MONKI_ROLE_ID as string)
+        const user = monkiRole?.members.random()
         const reply = await message.reply({
           content: `Rejoice <@${user?.id}>, as you have been randomly selected from the zoo! 🐵 Hee-Hee-Hoo-Hoo! 🐵`,
           allowedMentions: {
@@ -69,7 +70,7 @@ async function startZooKeeper (): Promise<void> {
           }
         }).catch(() => {})
 
-        log(`Selected ${user?.user.tag} to ping`)
+        log(`Selected ${user?.user.tag} from ${monkiRole?.members.size} monki(s)`)
 
         setTimeout(() => {
           reply?.delete().catch(() => {})
