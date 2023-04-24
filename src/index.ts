@@ -24,7 +24,7 @@ async function startZooKeeper (): Promise<void> {
     await guild?.members.fetch()
 
     cron.schedule('0 0 * * *', async () => {
-      console.log('Fetching members')
+      log('Fetching members')
       await guild?.members.fetch()
     })
 
@@ -68,6 +68,9 @@ async function startZooKeeper (): Promise<void> {
             repliedUser: false
           }
         }).catch(() => {})
+
+        log(`Selected <@${user?.id}> to ping`)
+
         setTimeout(() => {
           reply?.delete().catch(() => {})
 
