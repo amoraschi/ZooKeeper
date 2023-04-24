@@ -74,7 +74,7 @@ async function startZooKeeper (): Promise<void> {
           setTimeout(() => {
             shouldPingMonki = true
           }, 5000)
-        }, 500)
+        }, 250)
       }
     })
 
