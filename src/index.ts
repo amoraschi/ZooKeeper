@@ -16,14 +16,16 @@ async function startZooKeeper (): Promise<void> {
 
   client.once('ready', async () => {
     log(`Discord bot started as ${client.user?.tag}`)
-    await loadCommands(commands)
 
     const channel = client.channels.cache.find((channel: any) => channel.id === process.env.GENERAL_ID)
     const guild = client.guilds.cache.get(process.env.GUILD_ID as string)
 
+    await loadCommands(commands)
+    await guild?.members.fetch()
+
     cron.schedule('0 0 * * *', async () => {
       console.log('Fetching members')
-      await guild?.members.fetch() 
+      await guild?.members.fetch()
     })
 
     client.on('interactionCreate', async (interaction) => {
