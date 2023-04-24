@@ -62,7 +62,12 @@ async function startZooKeeper (): Promise<void> {
         shouldPingMonki = false
 
         const user = message.guild?.roles.cache.get(process.env.MONKI_ROLE_ID as string)?.members.random()
-        const reply = await message.reply(`Rejoice <@${user?.id}>, as you have been randomly selected from the zoo! 🐵 Hee-Hee-Hoo-Hoo! 🐵`).catch(() => {})
+        const reply = await message.reply({
+          content: `Rejoice <@${user?.id}>, as you have been randomly selected from the zoo! 🐵 Hee-Hee-Hoo-Hoo! 🐵`,
+          allowedMentions: {
+            repliedUser: false
+          }
+        }).catch(() => {})
         setTimeout(() => {
           reply?.delete().catch(() => {})
 
