@@ -69,7 +69,7 @@ async function startZooKeeper (): Promise<void> {
           }
         }).catch(() => {})
 
-        log(`Selected <@${user?.id}> to ping`)
+        log(`Selected ${user?.user.tag} to ping`)
 
         setTimeout(() => {
           reply?.delete().catch(() => {})
