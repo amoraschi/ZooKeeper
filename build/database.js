@@ -37,4 +37,9 @@ async function getDoc(id) {
 async function checkIfDoc(id) {
     return await collection.findOne({ id }) !== null;
 }
-export { connectDB, getDocCount, addDoc, getNewestDoc, getLongestReasonDoc, getShortestReasonDoc, removeDoc, getDoc };
+async function getRandomDoc() {
+    const count = await getDocCount();
+    const random = Math.floor(Math.random() * count);
+    return await collection.find().limit(1).skip(random).next();
+}
+export { connectDB, getDocCount, addDoc, getNewestDoc, getLongestReasonDoc, getShortestReasonDoc, removeDoc, getDoc, getRandomDoc };

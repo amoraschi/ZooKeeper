@@ -2,7 +2,7 @@ import env from 'dotenv'
 import { Client, GuildMember, TextChannel } from 'discord.js'
 import { getCommands, isUserAllowed, log } from './utils/utils.js'
 import { loadCommands } from './commands.js'
-import { connectDB, getDoc } from './database.js'
+import { connectDB, getDoc, getRandomDoc } from './database.js'
 
 env.config()
 
@@ -14,7 +14,7 @@ async function startZooKeeper (): Promise<void> {
   let shouldPingMonki = true
 
   client.once('ready', async () => {
-    log('Discord bot started')
+    log(`Discord bot started as ${client.user?.tag}`)
     await loadCommands(commands)
 
     const channel = client.channels.cache.find((channel: any) => channel.id === process.env.GENERAL_ID)
@@ -52,13 +52,14 @@ async function startZooKeeper (): Promise<void> {
         if (!shouldPingMonki) return
         shouldPingMonki = false
 
-        const reply = await message.reply(`<@&${process.env.MONKI_ROLE_ID}>`).catch(() => {})
+        const randomMonki = await getRandomDoc()
+        const reply = await message.reply(`Rejoice <@&${randomMonki?.id}>, as you have been randomly selected from the zoo! 🐵 Hee-Hee-Hoo-Hoo! 🐵`).catch(() => {})
         setTimeout(() => {
           reply?.delete().catch(() => {})
 
           setTimeout(() => {
             shouldPingMonki = true
-          }, 5000)
+          }, 10000)
         }, 500)
       }
     })
