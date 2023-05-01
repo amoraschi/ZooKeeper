@@ -18,10 +18,6 @@ async function getDocCount (): Promise<number> {
   return await collection.countDocuments()
 }
 
-async function getAllDocs () : Promise<Collection> {
-  return collection;
-}
-
 async function addDoc (data: MonkifyData): Promise<void> {
   const exists = await checkIfDoc(data.id)
 
@@ -32,32 +28,35 @@ async function addDoc (data: MonkifyData): Promise<void> {
   await collection.insertOne(data)
 }
 
-async function addBulkDoc (data: MonkifyData[]): Promise<void> {
-  await collection.insertMany(data);
+async function getNewestDoc (): Promise<MonkifyData | null> {
+  return await collection.find().limit(1).sort({ $natural: -1 }).next() as unknown as MonkifyData
 }
 
-async function getNewestDoc (): Promise<Document | null> {
-  return await collection.find().limit(1).sort({ $natural: -1 }).next()
+async function getLongestReasonDoc (): Promise<MonkifyData | null> {
+  return await collection.find().limit(1).sort({ reason: 1 }).next() as unknown as MonkifyData
 }
 
-async function getLongestReasonDoc (): Promise<Document | null> {
-  return await collection.find().limit(1).sort({ reason: 1 }).next()
-}
-
-async function getShortestReasonDoc (): Promise<Document | null> {
-  return await collection.find().limit(1).sort({ reason: -1 }).next()
+async function getShortestReasonDoc (): Promise<MonkifyData | null> {
+  return await collection.find().limit(1).sort({ reason: -1 }).next() as unknown as MonkifyData
 }
 
 async function removeDoc (id: string): Promise<void> {
   await collection.deleteOne({ id })
 }
 
-async function getDoc (id: string): Promise<Document | null> {
-  return await collection.findOne({ id })
+async function getDoc (id: string): Promise<MonkifyData | null> {
+  return await collection.findOne({ id }) as unknown as MonkifyData
 }
 
 async function checkIfDoc (id: string): Promise<boolean> {
   return await collection.findOne({ id }) !== null
+}
+
+async function getRandomDoc (): Promise<MonkifyData | null> {
+  const count = await getDocCount()
+  const random = Math.floor(Math.random() * count)
+
+  return await collection.find().limit(1).skip(random).next() as unknown as MonkifyData
 }
 
 export {
@@ -69,6 +68,5 @@ export {
   getShortestReasonDoc,
   removeDoc,
   getDoc,
-    getAllDocs,
-    addBulkDoc
+  getRandomDoc
 }

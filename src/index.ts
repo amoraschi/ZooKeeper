@@ -1,11 +1,11 @@
 import env from 'dotenv'
+import cron from 'node-cron'
 import { Client, GuildMember, TextChannel } from 'discord.js'
 import { getCommands, isUserAllowed, log } from './utils/utils.js'
 import { loadCommands } from './commands.js'
-import { connectDB, getDoc } from './database.js'
+import { connectDB, getDoc, getRandomDoc } from './database.js'
 
 env.config()
-let SERVER ;
 
 async function startZooKeeper (): Promise<void> {
   await connectDB()
@@ -15,13 +15,18 @@ async function startZooKeeper (): Promise<void> {
   let shouldPingMonki = true
 
   client.once('ready', async () => {
-
-    log('Discord bot started')
-    // @ts-ignore
-    SERVER = await client.guilds.fetch(process.env.GUILD_ID.toString());
-    await loadCommands(commands)
+    log(`Discord bot started as ${client.user?.tag}`)
 
     const channel = client.channels.cache.find((channel: any) => channel.id === process.env.GENERAL_ID)
+    const guild = client.guilds.cache.get(process.env.GUILD_ID as string)
+
+    await loadCommands(commands)
+    await guild?.members.fetch()
+
+    cron.schedule('0 0 * * *', async () => {
+      log('Fetching members')
+      await guild?.members.fetch()
+    })
 
     client.on('interactionCreate', async (interaction) => {
       if (!interaction.isCommand()) return
@@ -56,14 +61,24 @@ async function startZooKeeper (): Promise<void> {
         if (!shouldPingMonki) return
         shouldPingMonki = false
 
-        const reply = await message.reply(`<@&${process.env.MONKI_ROLE_ID}>`).catch(() => {})
+        const monkiRole = message.guild?.roles.cache.get(process.env.MONKI_ROLE_ID as string)
+        const user = monkiRole?.members.random()
+        const reply = await message.reply({
+          content: `Rejoice <@${user?.id}>, as you have been randomly selected from the zoo! 🐵 Hee-Hee-Hoo-Hoo! 🐵`,
+          allowedMentions: {
+            repliedUser: false
+          }
+        }).catch(() => {})
+
+        log(`Selected ${user?.user.tag} from ${monkiRole?.members.size} monki(s)`)
+
         setTimeout(() => {
           reply?.delete().catch(() => {})
 
           setTimeout(() => {
             shouldPingMonki = true
-          }, 10000)
-        }, 500)
+          }, 5000)
+        }, 250)
       }
     })
 
@@ -83,8 +98,3 @@ async function startZooKeeper (): Promise<void> {
 }
 
 startZooKeeper()
-let startTime = Date.now()
-export {
-  SERVER,
-  startTime
-}
