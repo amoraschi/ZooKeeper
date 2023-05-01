@@ -1,7 +1,4 @@
 import {addBulkDoc, getAllDocs, getDocCount} from '../database.js'
-import {SERVER} from "../index.js";
-import {measureMemory} from "vm";
-import {MonkifyData} from '../utils/constants'
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from "discord.js";
 
 export default {

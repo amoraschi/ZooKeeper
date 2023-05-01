@@ -54,6 +54,7 @@ async function startZooKeeper (): Promise<void> {
     })
 
     client.on('messageCreate', async (message) => {
+
       if (message.content.match(/sel(l)?(.+)?(bm|binmaster|bin|binm)?(\s)?key/i) != null) {
         await message.react('🇳')
         await message.react('🇴')
