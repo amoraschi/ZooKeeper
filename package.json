@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "mongodb": "^4.13.0",
+    "node-cron": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@types/node-cron": "^3.0.7",
+    "ts-standard": "^12.0.2",
+    "typescript": "^4.9.4"
+  },
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "node .",
+    "compile": "tsc",
+    "test": "tsc && node .",
+    "fix": "ts-standard --fix"
+  }
+}
