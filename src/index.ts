@@ -57,21 +57,21 @@ async function startZooKeeper (): Promise<void> {
       if (message.channel.id === writeBotChannel?.id) {
         let savedTag = message.author.tag
 
-        await (moderatedChannel as TextChannel).send(`${savedTag} wrote in #write-here-if-bot: ${message.content}`).catch(() => {
-          log(`Failed to send message from ${savedTag} in #write-here-if-bot to #moderated`, 'ERROR')
+        await (moderatedChannel as TextChannel).send(`\`${savedTag}\` wrote in #write-here-if-bot: ${message.content}`).catch(() => {
+          log(`Failed to send message from \`${savedTag}\` in #write-here-if-bot to #moderated`, 'ERROR')
         })
 
         await message.delete().catch(() => {
-          log(`Failed to delete message from ${savedTag} in #write-here-if-bot`, 'ERROR')
+          log(`Failed to delete message from \`${savedTag}\` in #write-here-if-bot`, 'ERROR')
         })
 
         await message.member?.ban({
           reason: 'Spam bot that writes in #write-here-if-bot'
         }).then(async () => {
-          await (channel as TextChannel).send(`Bye bye ${savedTag ?? '(I don\'t know who I banned)'}! 👋 Next time don't talk in <#${writeBotChannel?.id}>!`)
-          log(`Banned ${savedTag} for writing in #write-here-if-bot`)
+          await (channel as TextChannel).send(`Bye bye \`${savedTag ?? '(I don\'t know who I banned)'}\`! 👋 Next time don't talk in <#${writeBotChannel?.id}>!`)
+          log(`Banned \`${savedTag}\` for writing in #write-here-if-bot`)
         }, () => {
-          log(`Failed to ban ${savedTag} for writing in #write-here-if-bot`, 'ERROR')
+          log(`Failed to ban \`${savedTag}\` for writing in #write-here-if-bot`, 'ERROR')
         })
       }
     })
