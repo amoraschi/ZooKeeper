@@ -12,13 +12,12 @@ async function startZooKeeper (): Promise<void> {
   const client = new Client({ intents: ['Guilds', 'GuildMessages', 'GuildMembers', 'MessageContent'] })
   const commands = await getCommands()
 
-  let shouldPingMonki = true
-
   client.once('ready', async () => {
     log(`Discord bot started as ${client.user?.tag}`)
 
     const channel = client.channels.cache.find((channel: any) => channel.id === process.env.GENERAL_ID)
     const writeBotChannel = client.channels.cache.find((channel: any) => channel.id === process.env.WRITE_BOT_CHANNEL_ID)
+    const moderatedChannel = client.channels.cache.find((channel: any) => channel.id === process.env.MODERATED_CHANNEL_ID)
     const guild = client.guilds.cache.get(process.env.GUILD_ID as string)
 
     await loadCommands(commands)
@@ -58,6 +57,10 @@ async function startZooKeeper (): Promise<void> {
       if (message.channel.id === writeBotChannel?.id) {
         let savedTag = message.author.tag
 
+        await (moderatedChannel as TextChannel).send(`${savedTag} wrote in #write-here-if-bot: ${message.content}`).catch(() => {
+          log(`Failed to send message from ${savedTag} in #write-here-if-bot to #moderated`, 'ERROR')
+        })
+
         await message.delete().catch(() => {
           log(`Failed to delete message from ${savedTag} in #write-here-if-bot`, 'ERROR')
         })
@@ -79,7 +82,7 @@ async function startZooKeeper (): Promise<void> {
         const role = member.guild.roles.cache.find((role: any) => role.id === process.env.MONKI_ROLE_ID)
         if (role != null && channel != null) {
           await member.roles.add(role)
-          await (channel as TextChannel).send(`Welcome back to the server <@${member.user.id}>! You have been given the monki 🐒 role again! Enjoy monking around! 🐵 Hee-Hee-Hoo-Hoo! 🐵`)
+          // await (channel as TextChannel).send(`Welcome back to the server <@${member.user.id}>! You have been given the monki 🐒 role again! Enjoy monking around! 🐵 Hee-Hee-Hoo-Hoo! 🐵`)
         }
       }
     })

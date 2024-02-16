@@ -32,14 +32,6 @@ async function getNewestDoc (): Promise<MonkifyData | null> {
   return await collection.find().limit(1).sort({ $natural: -1 }).next() as unknown as MonkifyData
 }
 
-async function getLongestReasonDoc (): Promise<MonkifyData | null> {
-  return await collection.find().limit(1).sort({ reason: 1 }).next() as unknown as MonkifyData
-}
-
-async function getShortestReasonDoc (): Promise<MonkifyData | null> {
-  return await collection.find().limit(1).sort({ reason: -1 }).next() as unknown as MonkifyData
-}
-
 async function removeDoc (id: string): Promise<void> {
   await collection.deleteOne({ id })
 }
@@ -64,8 +56,6 @@ export {
   getDocCount,
   addDoc,
   getNewestDoc,
-  getLongestReasonDoc,
-  getShortestReasonDoc,
   removeDoc,
   getDoc,
   getRandomDoc
