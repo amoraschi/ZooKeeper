@@ -61,9 +61,9 @@ async function startZooKeeper (): Promise<void> {
           log(`Failed to send message from \`${savedID}\` in #write-here-if-bot to #moderated`, 'ERROR')
         })
 
-        await message.delete().catch(() => {
-          log(`Failed to delete message from \`${savedID}\` in #write-here-if-bot`, 'ERROR')
-        })
+        // await message.delete().catch(() => {
+        //   log(`Failed to delete message from \`${savedID}\` in #write-here-if-bot`, 'ERROR')
+        // })
 
         await message.member?.ban({
           reason: 'Spam bot that writes in #write-here-if-bot',
