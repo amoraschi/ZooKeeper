@@ -69,7 +69,7 @@ async function startZooKeeper (): Promise<void> {
           reason: 'Spam bot that writes in #write-here-if-bot',
           deleteMessageSeconds: 86400
         }).then(async () => {
-          await (channel as TextChannel).send(`Bye bye ${`<@${savedID}>` ?? '(I don\'t know who I banned)'}! 👋 Next time don't talk in <#${writeBotChannel?.id}>!`)
+          await (channel as TextChannel).send(`Bye bye ${savedID != null ? `<@${savedID}>` : 'I don\'t know who I banned'}! 👋 Next time don't talk in <#${writeBotChannel?.id}>!`)
           log(`Banned ${savedID} for writing in #write-here-if-bot`)
         }, () => {
           log(`Failed to ban ${savedID} for writing in #write-here-if-bot`, 'ERROR')
